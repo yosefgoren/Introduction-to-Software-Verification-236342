@@ -50,7 +50,24 @@
 
 \begin{document}
 \author{Yosef Goren}
-\title{}
+\title{Introduction to Software Verification 236342, Homework 1}
 \maketitle
+\section{}
+%enumerate with capital letters:
+\begin{enumerate}[label=\Alph*.]
+    \item Correct. Since the precondition is false, the postcondition is 'always' satisfied (since it is never tested).
+    \item Incorrect. A counterexample is $x=1,y=-1$. In this run, $l_1$ yields true, thus
+    the program halts with $y=-1$, which does not satisfy the postcondition.
+    \item Correct. The postcondition is true, so regardless of anything else,
+    for every input selection it will be evaluated as true.
+    \item Incorrect. A counterexample is $x=1, y=2$. In this run,
+    $l_1$ evaluates true, then $l_2$ causes: $\sigma=\{x=-1,y=1\}$,
+    then $l_3$ evaluates true, now $\sigma=\{x=-1,y=-1\}$, next $l_1$
+    yields true, $\sigma=\{x=0,y=1\}$, $l_3$ yields true,
+    $\sigma=\{x=0,y=-1\}$, $l_1$ yields false and finally - halt.
+    Meaning the precondition can be satisfied and the halted program 
+    does not satisfy the postcondition.
+    \item 
+\end{enumerate}
 
 \end{document}
