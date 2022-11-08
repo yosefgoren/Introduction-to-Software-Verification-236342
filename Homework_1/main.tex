@@ -56,18 +56,39 @@
 %enumerate with capital letters:
 \begin{enumerate}[label=\Alph*.]
     \item Correct. Since the precondition is false, the postcondition is 'always' satisfied (since it is never tested).
-    \item Incorrect. A counterexample is $x=1,y=-1$. In this run, $l_1$ yields true, thus
-    the program halts with $y=-1$, which does not satisfy the postcondition.
+    \item Incorrect. Counterexample $x=-100,y=-99$:
+    \begin{itemize}
+        \item $l_0, -100, -99$
+        \item $l_1, -100, -99$
+        \item $l_2, -100, -99$
+        \item $l_3, -1, -99$
+        \item $l_*, -1, -99$
+    \end{itemize}
+    As can be seen, precondition is satisfied and postcondition is not.
     \item Correct. The postcondition is true, so regardless of anything else,
-    for every input selection it will be evaluated as true.
-    \item Incorrect. A counterexample is $x=1, y=2$. In this run,
-    $l_1$ evaluates true, then $l_2$ causes: $\sigma=\{x=-1,y=1\}$,
-    then $l_3$ evaluates true, now $\sigma=\{x=-1,y=-1\}$, next $l_1$
-    yields true, $\sigma=\{x=0,y=1\}$, $l_3$ yields true,
-    $\sigma=\{x=0,y=-1\}$, $l_1$ yields false and finally - halt.
-    Meaning the precondition can be satisfied and the halted program 
-    does not satisfy the postcondition.
-    \item 
+    for every input selection it will be evaluated as true (the program does not even have to terminate either).
+    \item Incorrect. Counterexample $x=1, y=9$:
+    \begin{itemize}
+        \item $l_0, 1, 9$
+        \item $l_1, 1, 9$
+        \item $l_2, -8, 9$
+        \item $l_3, -8, 9$
+        \item $l_*, -8, 9$
+    \end{itemize}
+    Postcondition is false, so it is not satisfied.
+    \item Incorrect. Counterexample $x=1, y=3$:
+    \begin{itemize}
+        \item $l_0, 1, 3$
+        \item $l_1, 1, 3$
+        \item $l_2, 1, 3$
+        \item $l_3, -2, 3$
+        \item $l_4, -2, 3$
+        \item $l_1, -2, -3$
+        \item $l_2, -2, -3$
+        \item $l_3, -2, -3$
+        \item $l_4, -2, -3$
+
+    \end{itemize}
 \end{enumerate}
 
 \end{document}
