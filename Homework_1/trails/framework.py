@@ -6,6 +6,7 @@ from threading import Thread
 from tqdm import tqdm
 # Details on these threads at: https://docs.python.org/3/library/threading.html
 
+
 class ResultOutput:
 	def __init__(self, finished: bool, result = None):
 		self.finished = finished
@@ -55,6 +56,7 @@ def runAndStore(store: Reference, func, func_args):
 	try:
 		store.obj = func(*func_args)
 	except RecursionError as e:
+		# print("run finished due to recursion error")
 		store.obj = None
 	# print(f"\tfinished running {func.__name__}{func_args} and got {store.obj}")
 
