@@ -98,7 +98,22 @@
     being the same as the initial state at $l_1$.
     Since this is a total correcness condition on the specification,
     the correctness is contredicted by the program failing to terminate.
+\end{enumerate}
 
+\section{}
+
+\section{}
+\begin{enumerate}[label=\Alph*.]
+    \item To enforce the program to not finish
+    on a spesific set on inputs, we can require that if
+    said inputs have been given and the program finishes - 
+    the postcondition fails:
+    \[\{\forall p\in\mathbf{P}, x=p^2\}P\{false\}\]
+    \item To require that for a set of inputs a program finishes.
+    we can use the precondition to apply the condition only to
+    the relivant set and use total correctness to require the program to halt
+    on these inputs:
+    \[<gcd(x,y)=1>P<true>\]
 \end{enumerate}
 
 \end{document}
