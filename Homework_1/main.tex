@@ -108,12 +108,29 @@
     on a spesific set on inputs, we can require that if
     said inputs have been given and the program finishes - 
     the postcondition fails:
-    \[\{\forall p\in\mathbf{P}, x=p^2\}P\{false\}\]
+    \[\{\forall p\in\mathbb{P}, x\neq p^2\}P\{false\}\]
+    We can also represent $p\in\mathbb{P}$ more explicitly:
+    \[p\in\mathbb{P}\Leftrightarrow
+    (\forall x,\forall y, (x\cdot y=p)\rightarrow (|x|=1\wedge|y|=1))\]
+    (Here we assume the variables are defined over the integers).\\
+    So our full specification is:
+    \[\{\forall p,
+    ((\forall x,\forall y, (x\cdot y=p)\rightarrow (|x|=1)\wedge|y|=1)
+    \rightarrow
+    (x\neq p^2))\}P\{false\}\]
     \item To require that for a set of inputs a program finishes.
     we can use the precondition to apply the condition only to
     the relivant set and use total correctness to require the program to halt
     on these inputs:
     \[<gcd(x,y)=1>P<true>\]
+    Similarly, we can express $gcd(x,y)=1$ with:
+    \[
+        (gcd(x,y)=1)
+    \Leftrightarrow
+        (\forall z,(\exists n, n\cdot z=x)\rightarrow (\forall n, n\cdot z\neq y))
+    \]
+    And get the full specification:
+    \[<\forall x,\forall y,(\forall z,(\exists n, n\cdot z=x)\rightarrow (\forall n, n\cdot z\neq y))>P<true>\]
 \end{enumerate}
 
 \end{document}
