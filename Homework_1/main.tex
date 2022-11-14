@@ -92,12 +92,12 @@
         \item $l_3, -5, 3$
         \item $l_4, -5, 3$
     \end{itemize}
-    \item Incorrect. Counterexample $x=1,y=2$,
     By running this example we see that the program gets stuck in a loop
     at labels $l_1, l_2, l_3, l_4$. And each 4 iterations result with the state
     being the same as the initial state at $l_1$.
     Since this is a total correcness condition on the specification,
     the correctness is contredicted by the program failing to terminate.
+    \item Correct.
     \item Incorrect. Since we require total correctness, every computation that satisfies the precondition $z=5$ should terminate. However, for $x=1, y=2, z=5$ the program never terminates, as we showed in F.
     \item Correct. The program does not change the value of $z$, so every run that terminates and satisfies the precondition $z=5$ will also hold the postcondition.
     \item Correct. The value of $|y|$ never changes during the execution, so the condition will hold for every run that terminates.
@@ -148,5 +148,34 @@
     And get the full specification:
     \[<\forall x,\forall y,(\forall z,(\exists n, n\cdot z=x)\rightarrow (\forall n, n\cdot z\neq y))>P<true>\]
 \end{enumerate}
+
+\section{}
+\begin{itemize}
+    \item The reachability condition:
+    \[
+        R'^0(\bar{x})=true
+    \]
+    \[
+        R'^{k+1}(\bar{x})=
+        \begin{cases}
+            R'^k(\bar{x}) & \text{if } l_{i_k}\in\{[start], [end], [\bar{y}:=\bar{e}]\}\\
+            R'^k(\bar{x})\wedge B(\bar{x}) & \text{if } l_{i_k}=[B(\bar{X})]\wedge (l_{i_k}\rightarrow^Tl_{i_{k+1}})\\
+            R'^k(\bar{x})\wedge \neg B(\bar{x}) & \text{if } l_{i_k}=[B(\bar{X})]\wedge (l_{i_k}\rightarrow^Fl_{i_{k+1}})
+
+        \end{cases}    
+    \]
+    \item The state transformer:
+    \[
+        T'^0(\bar{x})=\bar{x}    
+    \]
+    \[
+        T'^{k+1}(\bar{x})=
+        \begin{cases}
+            T'^k(\bar{x}) & \text{if } l_{i_k}\in\{[start], [end], [B(\bar{x})]\}\\
+            T'^k(\bar{x})[\bar{y}\leftarrow\bar{e}] & \text{if } l_{i_k}=[\bar{y}:=\bar{e}]
+        \end{cases}    
+    \]
+\end{itemize}
+
 
 \end{document}
