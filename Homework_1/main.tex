@@ -108,10 +108,14 @@
 
 \section{}
 \begin{enumerate}[label=\Alph*.]
-    \item Precondition $q_1$ is $$r=T, r>0, k>0, n\geq0, F_n = F_{n-1}+F_{n-2}, F_0 = 0, F_1 = 1$$
+    \item Precondition $q_1$ is $$r=T, r \in \mathbb{N}_0, k \in \mathbb{N}_0, n \in \mathbb{N}_0, F_n = F_{n-1}+F_{n-2}, F_0 = 0, F_1 = 1$$
     Postcondition $q_2$ is: $$(r=1 \wedge T>F_k) \oplus (r=0 \wedge T=F_k) \oplus (r=-1 \wedge T<F_k)$$
     
-    \item
+    \item Precondition $q_1$ is $$x=X, r \in \mathbb{N}_0, k \in \mathbb{N}_0, n \in \mathbb{N}_0, F_n = F_{n-1}+F_{n-2}, F_0 = 0, F_1 = 1$$
+    Postcondition $q_2$ is:
+    $$ \exists Y \in \mathbb{N}_0, Fib_k(r) \wedge \\
+    Y*r\leq x \wedge (Y+1)*r > x \wedge \\
+    (y=(Y+1)*r \wedge x=X)$$
 \end{enumerate}
 
 \section{}
