@@ -49,7 +49,7 @@
 \lstset{style=mystyle}
 
 \begin{document}
-\author{Yosef Goren}
+\author{Yosef Goren, Andrew Elashkin 921130571}
 \title{Introduction to Software Verification 236342, Homework 1}
 \maketitle
 \section{}
@@ -98,9 +98,21 @@
     being the same as the initial state at $l_1$.
     Since this is a total correcness condition on the specification,
     the correctness is contredicted by the program failing to terminate.
+    \item Incorrect. Since we require total correctness, every computation that satisfies the precondition $z=5$ should terminate. However, for $x=1, y=2, z=5$ the program never terminates, as we showed in F.
+    \item Correct. The program does not change the value of $z$, so every run that terminates and satisfies the precondition $z=5$ will also hold the postcondition.
+    \item Correct. The value of $|y|$ never changes during the execution, so the condition will hold for every run that terminates.
+    \item Incorrect. $x=7.5, y=7.5$ will fail the postcondition.
+    \item
+    \item
 \end{enumerate}
 
 \section{}
+\begin{enumerate}[label=\Alph*.]
+    \item Precondition $q_1$ is $$r=T, r>0, k>0, n\geq0, F_n = F_{n-1}+F_{n-2}, F_0 = 0, F_1 = 1$$
+    Postcondition $q_2$ is: $$(r=1 \wedge T>F_k) \oplus (r=0 \wedge T=F_k) \oplus (r=-1 \wedge T<F_k)$$
+    
+    \item
+\end{enumerate}
 
 \section{}
 \begin{enumerate}[label=\Alph*.]
