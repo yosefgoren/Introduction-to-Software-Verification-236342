@@ -49,7 +49,7 @@
 \lstset{style=mystyle}
 
 \begin{document}
-\author{Yosef Goren, Andrew Elashkin 921130571}
+\author{Yosef Goren 211515606, Andrew Elashkin 921130571}
 \title{Introduction to Software Verification 236342, Homework 1}
 \maketitle
 \section{}
@@ -95,25 +95,27 @@
     By running this example we see that the program gets stuck in a loop
     at labels $l_1, l_2, l_3, l_4$. And each 4 iterations result with the state
     being the same as the initial state at $l_1$.
-    Since this is a total correcness condition on the specification,
-    the correctness is contredicted by the program failing to terminate.
-    \item Correct.
+    Since this is a total correctness condition on the specification,
+    the correctness is contradicted by the program failing to terminate.
+    \item Correct. We now require partial correctness, so we check postcondition only for the cases that terminate. That means, that we won't have a problem like we had in case E, since such an input won't be considered, and all the cases that satisfy $x^2<y^2$ and terminate hold $x^2<y^2$ postcondition.
     \item Incorrect. Since we require total correctness, every computation that satisfies the precondition $z=5$ should terminate. However, for $x=1, y=2, z=5$ the program never terminates, as we showed in E.
     \item Correct. The program does not change the value of $z$, so every run that terminates and satisfies the precondition $z=5$ will also hold the postcondition.
     \item Correct. The value of $|y|$ never changes during the execution, so the condition will hold for every run that terminates.
-    \item Incorrect. $x=7.5, y=7.5$ will fail the postcondition.
+    \item Incorrect (But correct for $x,y \in \mathbb{N}$). If we assume that the input can be rational numbers, then $x=7.5, y=7.5$ will fail the postcondition. However, the assumption holds for the integers.
     \item Incorrect. $x=1, y=2$ satisfy the precondition, but the program never terminates, as we showed in E.
     \item Correct. We check for partial correctness, so we want the program that satisfies the precondition to stuck in infinite loop. This is exactly what happens with all the numbers satisfying the precondition, similar to the example in E.
 \end{enumerate}
 
 \section{}
 \begin{enumerate}[label=\Alph*.]
-    \item Precondition $q_1$ is $$r=T, r \in \mathbb{N}_0, k \in \mathbb{N}_0, n \in \mathbb{N}_0, F_n = F_{n-1}+F_{n-2}, F_0 = 0, F_1 = 1$$
-    Postcondition $q_2$ is: $$(r=1 \wedge T>f_k \wedge FIB_k) \vee (r=0 \wedge T=f_k \wedge FIB_k) \vee (r=-1 \wedge T<F_k \wedge FIB_k)$$
-    $$FIB_k = \exists f_0, f_1,...,f_k(f_0=0 \wedge f_1=1 \wedge ( \bigwedge\limits_{l=2}^k f_l=f_{l-1} + f_{l-2} ) $$
-    \item Precondition $q_1$ is $$x=X, r \in \mathbb{N}_0, k \in \mathbb{N}_0, n \in \mathbb{N}_0, F_n = F_{n-1}+F_{n-2}, F_0 = 0, F_1 = 1$$
+    \item Specification is described by the tuple $<q_1, q_2>$ \\
+    Where precondition $q_1$ is $$r=T, r \in \mathbb{N}_0, k \in \mathbb{N}_0$$
+    Postcondition $q_2$ is: $$k \in \mathbb{N}_0 \wedge (r=1 \wedge (T>f_k) \wedge \mathcal{F}_k) \vee (r=0 \wedge (T=f_k) \wedge \mathcal{F}_k) \vee (r=-1 \wedge (T<F_k) \wedge \mathcal{F}_k)$$
+    $$\mathcal{F}_k = \exists f_0, f_1,...,f_k(f_0=0 \wedge f_1=1 \wedge ( \bigwedge\limits_{l=2}^k f_l=f_{l-1} + f_{l-2} ) $$
+    \item Specification is described by the tuple $<q_1, q_2>$ \\
+    Precondition $q_1$ is $$x=X, x \in \mathbb{N}_0$$
     Postcondition $q_2$ is:
-    $$ \exists Y \in \mathbb{N}_0, Fib_k(r) \wedge \\
+    $$ \exists Y \in \mathbb{N}_0 \wedge \exists r \in \mathbb{N}_0 \wedge (k \in \mathbb{N}_0 \wedge Fib_k(r)) \wedge \\
     Y*r\leq x \wedge (Y+1)*r > x \wedge \\
     (y=(Y+1)*r \wedge x=X)$$
 \end{enumerate}
@@ -121,7 +123,7 @@
 \section{}
 \begin{enumerate}[label=\Alph*.]
     \item To enforce the program to not finish
-    on a spesific set on inputs, we can require that if
+    on a specific set on inputs, we can require that if
     said inputs have been given and the program finishes - 
     the postcondition fails:
     \[\{\forall p\in\mathbb{P}, x\neq p^2\}P\{false\}\]
