@@ -173,5 +173,58 @@ every reachable state to not satisfy the interrupt condition.
 
 
 \section*{Question 3}
+Let a \emph{'critical'} be a point from which every proceeding point satisfies $q_2$.\\
 
+The idea is to construct two sets of formulas which will each apply to the entier $CFG$,
+one will ensure that a \emph{'critical'} point will be reached in the future (this can be done
+using well founded sets as seen in the lecture),
+and other will ensure that if the \emph{'critical'} point is reached -
+the current point satisfies $q_2$ and the next point is also \emph{'critical'}.
+
+
+
+Formally, the proof system will require the following steps:
+\begin{enumerate}
+    \item Define all vertecies in the $CFG$ to be cut points.
+    \item Choose a well founded set $(W,<)$.
+    \item For each cut point $l$, define two formulas $Pre_l(\bar{x},w)$ and $Post_l(\bar{x})$ where
+    the first one depends on the state $\bar{x}$ and an item $w$ from the well founded set - while the second
+    only depends on the state.
+    \item Require this ('initial') formula to be satisfied:
+    \[
+        \forall\left[q_1(\bar{x})\rightarrow \exists w: Pre_{l_0}(\bar{x},w)\right]
+    \]
+    \item  At every simple path $\tau$ between cut points $l_{i_u}, l_{i_v}$,
+    require (all) the following formulas be satisfied:
+    \begin{enumerate}
+        \item \[
+            \forall\bar{x}, w
+            \left[
+                Pre_{l_{i_u}}((\bar{x},w)\wedge R_\tau(\bar{x}))\rightarrow
+                ((\exists w'<w: Pre_{l_{i_v}}(\bar{x},w'))\vee Post_{l_{i_v}}(\bar{x}))
+            \right]
+        \]
+        \item \[
+            \left[Post_{l_u}(\bar{x})\rightarrow Post_{l_v}(\bar{x})\right]
+        \]
+        \item \[
+            \left[Post_{l_v}(\bar{x})\rightarrow q_2(\bar{x})\right]    
+        \]
+    \end{enumerate}
+    Here in (a) we ensure that from any reachable point,
+    we advance to a 'lower' point in the well founded set while maintaiing
+    our set of formulas - or otherwise - reach the \emph{'critical'} point.\\
+    In (b) we ensure that once we reach the \emph{'critical'} point,
+    we maintain the \emph{'critical'} property.\\
+    Finally, (c) ties the critical property to the wanted \emph{'postcondition'} $q_2$.
+\end{enumerate}
+
+Here we have a sound proof system, since we have ensured that:
+\begin{enumerate}
+    \item If the precondition is met - we will reach a \emph{'critical'} point.
+    \item If we reach a \emph{'critical'} point - we will maintain the \emph{'critical'} property.
+    \item If we are passed a \emph{'critical'} point - we satisfy the \emph{'postcondition'} $q_2$.
+\end{enumerate}
+If we wanted to prove this formally, we could follow a similar proof to the one shown in class
+of the proof system for showing termination properties using well founded sets.
 \end{document}
