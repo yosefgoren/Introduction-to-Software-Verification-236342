@@ -56,6 +56,7 @@
 \section*{Question 1}
 
 \section*{Question 2}
+\subsection*{2.a}
 Let $P\in FPG'$ (extended Flowchart Programming Languge - with interrupts).\\
 And let $CFG:FPL\longrightarrow [n]\times [n]^2$ be a function returning
 the control flow graph any program $P\in FPG$ (unmodified).\\
@@ -148,6 +149,28 @@ we have '$\{q_1(\bar{x})\}(P,P_{int})q_1(\bar{x})$'.
 
 The new proof system is also reasonably complete, as haveing an interrupt which an [\emph{false}]
 predicate would mean our proof system is equivalent to the original one.
+
+\subsection*{2.b}
+The new proof system we define will be identical to the original floyed's system,
+with the following modifications:
+\begin{enumerate}
+    \item The set of cut points must be the set of all vertecies in the $CFG$.
+    \item The new set of conditions is:\\
+    For any simple path $\tau$ from two cut points $l_{i_u}, l_{i_v}$ the following formula is satisfied:
+    \[
+        [I_{i_u}(\bar{x})\wedge R_\tau^{i_u}(\bar{x})\rightarrow \neg q_{int}(T_\tau^{i_u}(\bar{x}))\wedge I_{i_v}(\bar{x})]
+    \]
+    \item It is still required that $I_{l_0}=q_1$ (the precondition),
+    but it is no longer required that $I_{l_*}=q_2$ (the postcondition).
+\end{enumerate}
+
+The soundness of the proof system is due to the fact that the closure proprety
+will yield every cut point (thus every label) that is reachable to not satisfy the
+interrupt condition - meaning it is never possible to enter a run within any sate that can actually be reached.
+
+It is also reasonably complete since we have to require
+every reachable state to not satisfy the interrupt condition.
+
 
 \section*{Question 3}
 
