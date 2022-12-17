@@ -11,6 +11,8 @@
 \newtheorem{lemma}[theorem]{Lemma}
 \newtheorem{corollary}{Corollary}[theorem]
 
+
+
 % unique math expressions:  
 \usepackage{amsmath}
 \DeclareMathOperator*{\andloop}{\wedge}
@@ -49,11 +51,161 @@
 \lstset{style=mystyle}
 
 \begin{document}
-\author{Yosef Goren}
-\title{}
+\author{Yosef Goren 211515606, Andrew Elashkin 336127675}
+\date{November 2022}
+\title{Introduction to Software Verification 236342, Homework 1}
 \maketitle
-
 \section*{Question 1}
+\subsection*{a}
+%enumerate with capital letters:
+For the program P prove the following using Floyd's proof system:
+$$
+\{x=X \wedge y=Y\} P\left\{z=X^Y\right\}
+$$
+We choose 3 cutpoints in the program: $l_0, l_2 \text{ and } l_*$. The inductive assertions for those points are:
+$$ I_{l_0} = q_1 = (x=X \wedge y=Y)$$
+$$ I_{l_2}=(X^Y= z*x^y) $$
+$$ I_{l_*} = q_2 =(z=X^Y) $$
+Now, For every basic path $\alpha=\left(l, l^{\prime}\right)$ we need to prove that for $\forall x$: 
+
+\begin{align}
+q_1(\bar{x}) \wedge R_{l_0 l_2}(\bar{x}) &\rightarrow I\left(T_{l_0 l_2}(\bar{x})\right) \\
+I(\bar{x}) \wedge R_{l_2 l_2}(\bar{x}) &\rightarrow I\left(T_{l_2 l_2}(\bar{x})\right) \\
+I(\bar{x}) \wedge R_{l_2 l_*}(\bar{x}) &\rightarrow q_2\left(T_{l_2 l_*}(\bar{x})\right)
+\end{align}
+
+With this split we have 4 basic paths in our program flowchart, let us go through all of them one by one.
+
+\begin{enumerate}
+
+
+ \item path $\alpha_1: l_0 \rightarrow l_1 \rightarrow l_2$ 
+
+$R_\alpha^2(x, y, z)=$ true $\rightarrow$
+$R_\alpha^1(x, y, z)=$ true $\rightarrow$
+$R_\alpha(x, y, z)=$ true 
+
+$T_\alpha^2(x, y, z)=(x, y, z)$ $\rightarrow$
+$T_a^1(x, y, z)=(x, y, 1)$ $\rightarrow$
+$T_\alpha(x, y, z)=(x, y, 1)$ \\
+
+Now we check the inductive assertion for $\alpha_1$: \\
+$\forall(x, y, z)\left[((x=X \wedge y=Y) \wedge\right.$true$\left.) \rightarrow\left(X^Y=z*x^y \right)[(x, y, z) \leftarrow(x, y, 1)]\right] \equiv$ \\
+$\equiv \forall(x, y, z) \left[((x=X \wedge y=Y) \wedge\right.$true$\left.) \rightarrow\left(X^Y=x^y \right) \right]$ and it holds.
+\\
+
+ \item path $\alpha_2: l_2 \rightarrow l_*$ \\
+$R_{\alpha_2}^1(x, y, z)=$ true $\rightarrow$ 
+$R_{\alpha_2}(x, y, z)= (y=0)$  \\
+$T_{\alpha_2}^1(x, y, z)=(x, y, z)$ $\rightarrow$
+$T_{\alpha_2}(x, y, z)=(x, y, z)$ \\
+
+Now we check the inductive assertion $\alpha_2$: \\
+$\forall(x, y, z)\left[\left(\left(X^Y=z*x^y \right)\right.\right.\left.\wedge(y=0)) \rightarrow\left(z=X^Y \right)[(x, y, z) \leftarrow(x, y, z)]\right] \equiv$ \\
+$\equiv \forall(x, y, z)\left[\left(X^Y=z*x^0 \right) \rightarrow\left(X^Y=z \right) \right]$ and it holds.
+
+% 3333333333
+
+ \item  path $\alpha_3: l_2 \rightarrow l_3 \rightarrow l_4 \rightarrow l_2$ 
+
+$R_\alpha^3(x, y, z)=$ true $\rightarrow R_\alpha^2(x, y, z)=$ true $\rightarrow$ 
+
+$R_\alpha^1(x, y, z)= \neg \text{even}(y)$ $\rightarrow$
+$R_\alpha(x, y, z)= \neg \text{even}(y) \wedge \neg (y=0)$
+
+\vspace{5mm}
+
+$T_\alpha^3(x, y, z)=(x, y, z)$ $\rightarrow
+T_\alpha^2(x, y, z)=(x,y-1,z*x)$ $\rightarrow$
+
+$T_a^1(x, y, z)=(x,y-1,z*x)$ $\rightarrow
+T_\alpha(x, y, z)=(x,y-1,z*x)$ \\
+
+Now we check the inductive assertion for $\alpha_3$: \\
+$\forall(x, y, z)\left[(X^Y=z*x^y) \wedge (\neg \text{even}(y) \wedge \neg (y=0)) \rightarrow\left(X^Y=z*x^y \right)[(x, y, z) \leftarrow(x,y-1,z*x)]\right] \equiv$ \\
+$\forall(x, y, z)\left[(X^Y=z*x^y) \wedge (\neg \text{even}(y) \wedge \neg (y=0)) \rightarrow (X^Y=(z*x)*x^{y-1}) \right]$ and it holds since $(z*x)*x^{y-1}=z*x^y$.
+\\
+
+% 44444444444
+
+\item  path $\alpha_4: l_2 \rightarrow l_3 \rightarrow l_5 \rightarrow l_2$ 
+
+$R_\alpha^3(x, y, z)=$ true $\rightarrow R_\alpha^2(x, y, z)=$ true $\rightarrow$ 
+
+$R_\alpha^1(x, y, z)=  \text{even}(y)$ $\rightarrow$
+$R_\alpha(x, y, z)= \text{even}(y) \wedge \neg (y=0)$ \\
+
+$T_\alpha^3(x, y, z)=(x, y, z)$ $\rightarrow
+T_\alpha^2(x,y,z)=(x*x, y/2, z)$ $\rightarrow$
+
+$T_a^1(x, y, z)=(x*x, y/2, z)$ $\rightarrow
+T_\alpha(x, y, z)=(x*x, y/2, z)$ \\
+
+Now we check the inductive assertion for $\alpha_4$: \\
+$\forall(x, y, z)\left[(X^Y=z*x^y) \wedge ( \text{even}(y) \wedge \neg (y=0)) \rightarrow (X^Y=z*x^y) [(x, y, z) \leftarrow(x*x, y/2, z)]\right] \equiv$ \\
+$\forall(x, y, z)\left[(X^Y=z*x^y) \wedge (\neg \text{even}(y) \wedge \neg (y=0)) \rightarrow (X^Y=z*(x^2)^{y/2}) \right]$ and it holds since $z*(x^2)^{y/2}=z*x^y$.
+\\
+\end{enumerate}
+
+\subsection*{b}
+
+For the program P prove the following using Floyd's proof system:
+$$
+\langle x=X \wedge y=Y \wedge Y \geq 0\rangle P \langle z=X^Y\rangle
+$$
+In this question we will use the same cutpoints, the same calculations for $R_\alpha$ and $T_\alpha$ that we had in (a) and a well founded set $(\mathbb{N}, <)$ over natural numbers. The new inductive assertions will be:
+
+$$ I_{l_0} = ((w=y+2) \wedge(x=X \wedge y=Y))$$
+$$ I_{l_2}=(w=y+1) \wedge (X^Y= z*x^y)) $$
+$$ I_{l_*} = ((w=y) \wedge(z=X^Y)) $$
+(INIT) $$
+\forall(x, y, z)[(x=X \wedge y=Y \wedge Y \geq 0) \rightarrow \exists w[(w=y+2) \wedge(x=X \wedge y=Y)]]
+$$
+(DEC)
+$$
+\forall(x,y,z,w)\left[I_l(x,y,z, w) \wedge R_\alpha(x,y,z) \rightarrow \exists w^{\prime}\left[w^{\prime}<w \wedge I_{l^{\prime}}\left(T_\alpha(x,y,z), w^{\prime}\right)\right]\right]
+$$
+
+Now we need to check if those conditions hold for the paths from (a)
+\begin{enumerate}
+
+
+ \item path $\alpha_1: l_0 \rightarrow l_1 \rightarrow l_2$ 
+ 
+ $\forall(x, y, z, w)[ ((w=y+2) \wedge(x=X \wedge y=Y) \wedge $true$ \rightarrow $ \\
+ $\exists w^{\prime}[w^{\prime}<w \wedge((w^{\prime}=y+1) \wedge (X^Y=z*x^y)[(x, y, z) \leftarrow(x, y, 1)]]  \equiv$ \\
+$\equiv \forall(x, y, z) \left[((w=y+2) \wedge (x=X \wedge y=Y) \wedge\right.$true$\left.) \rightarrow\left(X^Y=x^y \right) \right]$
+
+ \item path $\alpha_2: l_2 \rightarrow l_*$
+ 
+  $\forall(x, y, z, w)[ ((w=y+1) \wedge (X^Y= z*x^y)) \wedge $(y=0)$ \rightarrow $ \\
+ $\exists w^{\prime}[w^{\prime}<w \wedge((w^{\prime}=0) \wedge (X^Y=z)[(x, y, z) \leftarrow(x, y, z)]]  \equiv$ \\
+$\equiv \forall(x, y, z) \left[((w=1) \wedge (z=X^Y) \rightarrow \exists w^{\prime}[w^{\prime}<w \wedge((w^{\prime}=0) \wedge \left(X^Y=z \right) \right]$
+ 
+  \item  path $\alpha_3: l_2 \rightarrow l_3 \rightarrow l_4 \rightarrow l_2$ 
+  
+$\forall(x, y, z, w)[ ((w=y+1) \wedge (X^Y= z*x^y)) \wedge (\neg \text{even}(y) \wedge \neg (y=0)) \rightarrow\left(X^Y=z*x^y)[(x, y, z) \leftarrow(x,y-1,z*x)]\right] \equiv$ \\
+$\exists w^{\prime}[w^{\prime}<w \wedge((w^{\prime}=y+1) \wedge (X^Y=z*x^y)[(x, y, z) \leftarrow(x, y-1, z*x)]]  \equiv$
+
+$\forall(x, y, z, w)[ ((w=y+1) \wedge (X^Y= z*x^y)) \wedge (\neg \text{even}(y) \wedge \neg (y=0)) \rightarrow\left(X^Y=z*x^y)[(x, y, z) \leftarrow(x,y-1,z*x)]\right] \equiv$ \\
+$\exists w^{\prime}[w^{\prime}<w \wedge((w^{\prime}=y+1) \wedge (X^Y=x*z*x^{y-1})]$
+
+and since $x*z*x^{y-1} = z*x^y$ it is true.
+
+ 
+ \item  path $\alpha_4: l_2 \rightarrow l_3 \rightarrow l_5 \rightarrow l_2$ 
+
+$\forall(x, y, z, w)[ ((w=y+1) \wedge (X^Y= z*x^y)) \wedge ( \text{even}(y) \wedge \neg (y=0)) \rightarrow\left(X^Y=z*x^y)[(x, y, z) \leftarrow(x,y-1,z*x)]\right] \equiv$ \\
+$\exists w^{\prime}[w^{\prime}<w \wedge((w^{\prime}=y+1) \wedge (X^Y=z*x^y)[(x, y, z) \leftarrow(x*x, y/2, z)]]  \equiv$
+
+$\forall(x, y, z, w)[ ((w=y+1) \wedge (X^Y= z*x^y)) \wedge (\text{even}(y) \wedge \neg (y=0)) \rightarrow\left(X^Y=z*x^y)[(x, y, z) \leftarrow(x,y-1,z*x)]\right] \equiv$ \\
+$\exists w^{\prime}[w^{\prime}<w \wedge((w^{\prime}=y/2+1) \wedge (X^Y=z*(x^2)^{y/2})]$
+ 
+and since $z*(x^2)^{y/2}=z*x^y$ it is true.
+
+\end{enumerate}
+
+
 
 \section*{Question 2}
 \subsection*{2.a}
@@ -227,4 +379,5 @@ Here we have a sound proof system, since we have ensured that:
 \end{enumerate}
 If we wanted to prove this formally, we could follow a similar proof to the one shown in class
 of the proof system for showing termination properties using well founded sets.
-\end{document
+
+\end{document}
