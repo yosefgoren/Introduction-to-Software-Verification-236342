@@ -11,6 +11,10 @@
 \newtheorem{lemma}[theorem]{Lemma}
 \newtheorem{corollary}{Corollary}[theorem]
 
+\usepackage{tikz}
+
+
+
 % unique math expressions:  
 \usepackage{amsmath}
 \DeclareMathOperator*{\andloop}{\wedge}
@@ -47,21 +51,102 @@
 }
 
 \lstset{style=mystyle}
-%\vdash
+
 \begin{document}
-\author{Yosef Goren \& Andrew }
-\title{Intro to Software Verification - Homework 3}
+\author{Yosef Goren 211515606, Andrew Elashkin 336127675}
+
+\title{Introduction to Software Verification 236342, Homework 3}
 \maketitle
 \section*{Question 1}
-%enumerate with Capital letters A,B,...
 \begin{enumerate}[label=\Alph*.]
     \item 3
     \item 1
     \item 3
-    \item 2
+    \item 4
+    \item 4
     \item 1
+    \item 4
+    \item 3
+    \item 2.
+$\phi_1 \not\Rightarrow \phi_2$:
+A counterexample of the kripke structure M and path $\pi$, that satisfies $\phi_1$, but not $\phi_2$ is below. Assume $\pi = s_0, s_0, s_0, ...$, then the pair $M, \pi \models \phi_1$, but $M, \pi \not\models \phi_2$.
+
+\begin{center}
+\begin{tikzpicture}[scale=0.2]
+\tikzstyle{every node}+=[inner sep=0pt]
+\draw [black] (18.9,-29) circle (3);
+\draw (18.9,-29) node {$s_0,\mbox{\{\}}$};
+\draw [black] (36.3,-29) circle (3);
+\draw (36.3,-29) node {$s_1,\mbox{ }p$};
+\draw [black] (53.9,-29) circle (3);
+\draw (53.9,-29) node {$s_3,\mbox{\{\}}$};
+\draw [black] (21.9,-29) -- (33.3,-29);
+\fill [black] (33.3,-29) -- (32.5,-28.5) -- (32.5,-29.5);
+\draw [black] (39.3,-29) -- (50.9,-29);
+\fill [black] (50.9,-29) -- (50.1,-28.5) -- (50.1,-29.5);
+\draw [black] (56.868,-29.345) arc (111.09476:-176.90524:2.25);
+\fill [black] (55.43,-31.57) -- (55.25,-32.49) -- (56.19,-32.13);
+\draw [black] (16.331,-27.474) arc (267.02387:-20.97613:2.25);
+\fill [black] (18.55,-26.03) -- (19.09,-25.26) -- (18.09,-25.21);
+\draw [black] (11.3,-29) -- (15.9,-29);
+\fill [black] (15.9,-29) -- (15.1,-28.5) -- (15.1,-29.5);
+\end{tikzpicture}
+\end{center}
+
+$\phi_2 \Rightarrow \phi_1$:
+$$M, \pi \models EGFp \Rightarrow$$
+$$ \forall i \geq 0, (M, \pi_i) \models Fp \Rightarrow$$
+Since we know that the path $pi_i$ exists, we can say that for every node $s_i$ in the path $pi_i$ there is such a path:
+$$ \forall i \geq 0, (M, s_i) \models EFp \Rightarrow$$
+$$M, \pi \models EGEFp $$
+
+
+    \item 1. 
+
+$\phi_1 \Rightarrow \phi_2$:
+$$ M,s \models AFAXp = A[true UAXp] \Rightarrow$$
+For every path $\pi$ starting at s:
+$$ \pi \models F A X p \Rightarrow \exists i \geq 0, \pi_i \models A X p \Rightarrow$$
+$$\pi_i \models A F X p \Rightarrow \pi \models A F X p \Rightarrow $$
+$$\pi \models X A F p \Rightarrow  M,s \models AXAFp$$
+
+
+$\phi_2 \not\Rightarrow \phi_1$: A counterexample of the kripke structure M and path $\pi$, that satisfies $\phi_2$, but not $\phi_1$ is below. Assume $\pi = s_0, s_1, s_0, s_1, ...$, then the pair $M, \pi \models \phi_2$, but $M, \pi \not\models \phi_1$.
+
+\begin{center}
+\begin{tikzpicture}[scale=0.2]
+\tikzstyle{every node}+=[inner sep=0pt]
+\draw [black] (18.9,-29) circle (3);
+\draw (18.9,-29) node {$s_0,\mbox{ }p$};
+\draw [black] (36.3,-29) circle (3);
+\draw (36.3,-29) node {$s_1,\mbox{\{\}}$};
+\draw [black] (36.3,-42.8) circle (3);
+\draw (36.3,-42.8) node {$s_3,\mbox{\{\}}$};
+\draw [black] (33.396,-29.747) arc (-78.52785:-101.47215:29.141);
+\fill [black] (33.4,-29.75) -- (32.51,-29.42) -- (32.71,-30.4);
+\draw [black] (36.3,-32) -- (36.3,-39.8);
+\fill [black] (36.3,-39.8) -- (36.8,-39) -- (35.8,-39);
+\draw [black] (11.3,-29) -- (15.9,-29);
+\fill [black] (15.9,-29) -- (15.1,-28.5) -- (15.1,-29.5);
+\draw [black] (33.6,-41.2) -- (21.21,-30.92);
+\fill [black] (21.21,-30.92) -- (21.5,-31.81) -- (22.14,-31.04);
+\draw [black] (21.834,-28.379) arc (99.4996:80.5004:34.937);
+\fill [black] (21.83,-28.38) -- (22.71,-28.74) -- (22.54,-27.75);
+\end{tikzpicture}
+\end{center}
 \end{enumerate}
 
+\section*{Question 2}
+
+\begin{enumerate}
+    \item Correct.
+    \item Wrong.
+    \item Wrong.
+    \item Wrong.
+    \item 4
+    \item Wrong.
+
+\end{enumerate}
 
 \section*{Question 2}
 \begin{enumerate}
@@ -95,11 +180,16 @@
         \begin{itemize}
             \item $s_0\models b$
             \item $s_0\models cUb$
-            \item $s_0\models a(cUb)$
-            \item $\pi\models a(cUb)$
+            \item $s_0\models aU(cUb)$
+            \item $\pi\models aU(cUb)$
         \end{itemize}
-        $\Rightarrow M\models A[a(cUb)]$
+        $\Rightarrow M\models A[aU(cUb)]$
+    \item False. Let $\pi=s_0\rightarrow s_1 \rightarrow s_2 \rightarrow s_3 \rightarrow s_3 \rightarrow ... $ \\ On this path $s_2 \models c$, meaning that $(Xa \rightarrow GXb)$ also needs to be satisfied for the formula to hold. $s_2 \models Xa$, but $s_3 \not\models GXb$ and so the formula does not hold for any path.
+    \item False. $\phi_1 = FG(a \vee c)$ has to hold for any path from $s_0$. Let $\pi=s_0\rightarrow s_5 \rightarrow s_5 \rightarrow ... $ \\ $FG(a \vee c)$ does not hold for this path and so $M \not\models \phi$.
 \end{enumerate}
+
+
+
 \section*{Question 3}
 \subsection*{Part A.}
 Let: $H:=\{f_1\times f_2\times, ...,\times f_m\}$.\\
@@ -193,5 +283,7 @@ Define an algorithm for verifying $\phi$ as follows:
     since if it was a legal node it either had to go from white to black or black to white - 
     which in either case would mean it is marked with either $w\wedge E(wU(EGb))$ or $b\wedge E(bU(EGw))$ respectively.
 \end{enumerate}
+
+
 
 \end{document}
