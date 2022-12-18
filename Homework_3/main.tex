@@ -101,6 +101,45 @@
         $\Rightarrow M\models A[a(cUb)]$
 \end{enumerate}
 \section*{Question 3}
+\subsection*{Part A.}
+Let: $H:=\{f_1\times f_2\times, ...,\times f_m\}$.\\
+In other words, $H$ is the set of all possible combinations of the $m$ functions in $F$.\\
+For any $h\in H, i\in[m]$, let $h[i]$ be an item within $h$
+which was chosen from $f_i$ - one must exists since $h$ is a combination of $f_i$.\\
+More formally, let $h[i]:= argmin_{i\mid s_i\in h\cap f_i}$ (the minimal item in $h$ from $f_i$).\\
+
+Proof.\\
+The following logical formulas are equivalent (and the transition from one to the other is trivial):
+\begin{enumerate}
+    \item $\forall i\in[m], f_i\cap inf(\pi)\neq\emptyset$
+    \item $\forall i\in[m],\exists s_i, s_i\in f_i\wedge s_i\in inf(\pi)$
+    \item $\forall i\in[m],\exists s_i\in f_i, s_i\in inf(\pi)$
+    \item $\exists s_1,s_2,...,s_m,\forall i\in[m], s_i\in f_i\wedge s_i\in inf(\pi)$
+    \item $\exists h\in H,\forall i\in[m], h[i]\in f_i\wedge h[i]\in inf(\pi)$
+    \item $\exists h\in H,(\forall i\in[m], h[i]\in f_i)\wedge (\forall i\in[m], h[i]\in inf(\pi))$
+    \item $\exists h\in H,(h\subseteq inf(\pi))\wedge (\forall i\in[m], h[i]\in inf(\pi))$
+    \item $\exists h\in H,(h\subseteq inf(\pi))\wedge (true)$
+    \item $\exists h\in H, h\subseteq inf(\pi)$
+\end{enumerate}
+
+\subsection*{Part B.}
+For any $i\in[m], \bar{f_i}:=S\setminus f_i$.\\
+Let $h:=\bigcap_{i=1}^m\bar{f_i}, H:=\{h\}$.\\
+
+Proof.\\
+The following series of formulas are equivalent:
+\begin{enumerate}
+    \item $\forall i\in[m], f_i\cap inf(\pi)=\emptyset$
+    \item $\forall i\in[m], \bar{f_i}\cap inf(\pi)=inf(\pi)$
+    \item $\forall i\in[m], inf(\pi)\subseteq \bar{f_i}$
+    \item $\forall i\in[m], \forall s\in inf(\pi),s\in\bar{f_i}$
+    \item $\forall s\in inf(\pi), \forall i\in[m],s\in\bar{f_i}$
+    \item $\forall s\in inf(\pi), s\in\bigcap_{i=1}^m\bar{f_i}$
+    \item $inf(\pi)\subseteq bigcap_{i=1}^m\bar{f_i}$
+    \item $inf(\pi)\subseteq h$
+    \item $\forall h'\in H, inf(\pi)\subseteq h'$
+\end{enumerate}
+
 \section*{Question 4}
 
 \end{document}
