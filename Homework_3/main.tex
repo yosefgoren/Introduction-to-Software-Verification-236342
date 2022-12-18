@@ -142,27 +142,56 @@ The following series of formulas are equivalent:
 
 \section*{Question 4}
 \subsection*{Part A.}
-Let $\phi_{B\rightarrow W}:=b\wedge bU(Gw)$,\\
-Let $\phi_{W\rightarrow B}:=w\wedge wU(Gb)$.\\
-The meaning of $\phi_{B\rightarrow W}$ is that the 
-path starts from at-least one $b$, and then continues
-being $b$ right untill the point where it is $Gw$, meaning it
+Let $\phi_{B\rightarrow W}:=b\wedge E(bU(EGw))$,\\
+Let $\phi_{W\rightarrow B}:=w\wedge E(wU(EGb))$.\\
+The meaning of $\phi_{B\rightarrow W}$ is that there exists 
+a path that starts with at-least one $b$, and then continues
+being $b$ right untill the point where there exists a path satisfying $Gw$, meaning it
 is $w$ exclusively from forever. In other words - 
-there is exactly one transision from $b$ to $w$ and no
+by concatenating the 'inner' path that satisfies $Gw$ with the suffix of
+the path that satisfies $\phi_{B\rightarrow W}$, we get a path
+that has exactly one transision from $b$ to $w$ and no
 transisions from $w$ to $b$.\\
-Symmetrically, $\phi_{W\rightarrow B}$ means there is
+Symmetrically, $\phi_{W\rightarrow B}$ means there exists a path
+from the initial node that has
 exactly one transision from $w$ to $b$ and no other transisions.\\
-This means $\phi_{W\rightarrow B}\wedge \phi_{B\rightarrow W}$ is a 
-satisfactory and required for the path to be legal.\\
-Let $\phi_L:=\phi_{W\rightarrow B}\wedge \phi_{B\rightarrow W}$.\\
-So $\phi_L$ means that the path is legal.\\
+So $\phi_{W\rightarrow B}\vee \phi_{B\rightarrow W}$ is a 
+satisfactory and required for the existance of a legal path.\\
+Let $\phi:=\phi_{W\rightarrow B}\wedge \phi_{B\rightarrow W}$.\\
+So $M,s\models \phi$ means that there exists a legal path from $s$.\\
+To describe $\phi$ explicitly: 
 \[
-    \phi_L=(b\wedge bU(Gw))\wedge (w\wedge wU(Gb))    
+    \phi=
+    (b\wedge E(bU(EGw)))\vee
+    (w\wedge E(wU(EGb)))
 \]
-And finally, we want to require there is a legal path so define:
-$\phi:E\phi_L$.\\
-\[
-    \phi=E((b\wedge bU(Gw))\wedge (w\wedge wU(Gb)))
-\]
+
+\subsection*{Part B.}
+Define an algorithm for verifying $\phi$ as follows:
+\begin{enumerate}
+    \item Create $M':=(S,R',L)$, where $R':=\{(s,s')\in R\mid l(s)=l(s')\}$
+        meaning nodes are now connected if they have the same color.
+    \item Find the maximaly connected componenets of $M'$ - each componenet has uniform color.
+    \item Mark with $C$ all components that have a circle, and recursively mark
+    it with $C$ all nodes that have a path to a component with $C$.
+    \item Now each component that has an inifinite path of just one color is marked
+    with $C$. Moreover, each node that has an inifinite path of uniform color is within
+    a component that is marked with $C$.
+    \item Mark all black components that have $C$ with $E(wU(EGb))$ - note how
+    all nodes within such a component actually satisfy this formula in the origina kripke structure.\\
+    \item Symmetrically, mark all white components that have $C$ with $E(bU(EGw))$.
+    \item Look at all edges (in the original structure) that go from 
+    componenets of different colors. If there exists such edge between a
+    white component and a $E(wU(EGb))$ component, mark the white component with $w\wedge E(wU(EGb))$,
+    moreover, mark all white components leading to said white component also with $w\wedge E(wU(EGb))$.\\
+    Note how each node within these white components indeed satisfy $w\wedge E(wU(EGb))$ in the
+    original structure.\\
+    Symmetrically, if there exists an edge between a black component and a $E(bU(EGw))$ component,
+    mark the black component with $b\wedge E(bU(EGw))$ and all black components leading to said
+    black component with $b\wedge E(bU(EGw))$ also.\\
+    \item Now any node is legal iff it is marked with either $w\wedge E(wU(EGb))$ or $b\wedge E(bU(EGw))$,
+    since if it was a legal node it either had to go from white to black or black to white - 
+    which in either case would mean it is marked with either $w\wedge E(wU(EGb))$ or $b\wedge E(bU(EGw))$ respectively.
+\end{enumerate}
 
 \end{document}
