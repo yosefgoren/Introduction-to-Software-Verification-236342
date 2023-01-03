@@ -46,13 +46,49 @@
     tabsize=2
 }
 
+\newcommand{\lv}[0]{\overline{v}}
+\newcommand{\lx}[0]{\overline{x}}
+
 \lstset{style=mystyle}
 
 \begin{document}
 \author{Yosef Goren}
 \title{Software Verification Homework 4}
-\section{Problem 1}
-\subsection{}
+\section{BDD constructions}
+%enumerate with letters:
+\begin{enumerate}[label=\textbf{\alph*.}]
+    \item 
+        Denote the set of vertices: $V=\{\lx_i\mid i\in[n]\}$\\
+        Let $E(\lv):=E_0(\lv)\wedge E_1(\lv)$.
+        \[
+            A'(\lv):=A(\lv)\wedge \left(\bigwedge_{i=0}^n(E(\lv,\lx_i)\Rightarrow B(\lx_i))\right)
+        \]
+        The idea is that $A(\lv)$ means the 'accepted' node has to be from $A$,
+        and rest of the expression means that all of it's neighbors have to be in $B$.
+        It is equivalent to satisfying the following formula:
+        \[
+            (\lv\in V)\wedge \left(\forall \lx\in V, E(\lx, \lv)\rightarrow B(\lx)\right)
+        \]
+    \item 
+    \[
+        V_{1,2}(\lv,\lv'):=
+            \left(\bigvee_{i=0}^nE_1(\lv, \lx_i)\wedge E_0(\lx_i, \lv')\right)
+            \vee
+            \left(\bigvee_{i=0}^nE_0(\lv, \lx_i)\wedge E_1(\lx_i, \lv')\right)
+    \]
+    For the vertices $\lv,\lv'$ to have a 
+    path of length 2 and weight 1 between them,
+    there must either be a path of length 2 with weight
+    1 were the edge connected to $\lv$ is 1 and the other edge is 0,
+    or the other way around.\\
+    The primary operator of the expression above describes this fact;
+    to be more specific - the left side of the expression
+    describes the case where there is a path of length 2 
+    were the node connected to $\lv$ has weight 1, and so on.
+\end{enumerate}
+    
+\section{BDD operations}
+\section{D\&D}
 \maketitle
 
 \end{document}
