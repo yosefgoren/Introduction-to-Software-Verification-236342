@@ -46,14 +46,28 @@
     tabsize=2
 }
 
+\usepackage{tikz}
+\usetikzlibrary{calc,arrows,positioning}
+
 \newcommand{\lv}[0]{\overline{v}}
 \newcommand{\lx}[0]{\overline{x}}
 
 \lstset{style=mystyle}
 
 \begin{document}
+\tikzset{
+    treenode/.style = {align=center},
+    c/.style = {treenode,circle,draw=black,minimum width=1.5em,minimum height=1.5em,text centered,font=\footnotesize},
+    r/.style = {treenode,rectangle,draw=black,minimum width=1.5em,minimum height=1.5em,text centered,font=\footnotesize},
+    level 1/.style={sibling distance=60mm},
+    level 2/.style={sibling distance=30mm},
+    level 3/.style={sibling distance=15mm},
+    level 4/.style={sibling distance=7mm}
+}
 \author{Yosef Goren}
 \title{Software Verification Homework 4}
+\maketitle
+
 \section{BDD constructions}
 %enumerate with letters:
 \begin{enumerate}[label=\textbf{\alph*.}]
@@ -70,25 +84,77 @@
             (\lv\in V)\wedge \left(\forall \lx\in V, E(\lx, \lv)\rightarrow B(\lx)\right)
         \]
     \item 
-    \[
-        V_{1,2}(\lv,\lv'):=
-            \left(\bigvee_{i=0}^nE_1(\lv, \lx_i)\wedge E_0(\lx_i, \lv')\right)
-            \vee
-            \left(\bigvee_{i=0}^nE_0(\lv, \lx_i)\wedge E_1(\lx_i, \lv')\right)
-    \]
-    For the vertices $\lv,\lv'$ to have a 
-    path of length 2 and weight 1 between them,
-    there must either be a path of length 2 with weight
-    1 were the edge connected to $\lv$ is 1 and the other edge is 0,
-    or the other way around.\\
-    The primary operator of the expression above describes this fact;
-    to be more specific - the left side of the expression
-    describes the case where there is a path of length 2 
-    were the node connected to $\lv$ has weight 1, and so on.
+        \[
+            V_{1,2}(\lv,\lv'):=
+                \left(\bigvee_{i=0}^nE_1(\lv, \lx_i)\wedge E_0(\lx_i, \lv')\right)
+                \vee
+                \left(\bigvee_{i=0}^nE_0(\lv, \lx_i)\wedge E_1(\lx_i, \lv')\right)
+        \]
+        For the vertices $\lv,\lv'$ to have a 
+        path of length 2 and weight 1 between them,
+        there must either be a path of length 2 with weight
+        1 were the edge connected to $\lv$ is 1 and the other edge is 0,
+        or the other way around.\\
+        The primary operator of the expression above describes this fact;
+        to be more specific - the left side of the expression
+        describes the case where there is a path of length 2 
+        were the node connected to $\lv$ has weight 1, and so on.
+    \item 
 \end{enumerate}
     
 \section{BDD operations}
+\begin{enumerate}[label=\textbf{\alph*.}]
+\item
+    \begin{enumerate}[label=\textbf{\arabic*.}]
+    \item True. $D\subseteq D'$.\\
+        Proof:\\
+        Let $x\in D$. Denote the path of $x$ on $B$ with $a_1,a_2,...,a_n$.\\
+        Since $x\in D$ then $B(x)=1$, meaning the path must end with $1$.
+        If $\exists i\in[n]: a_i=u$.
+        then on the evaluation of $x$ on $B'$,
+        the path will be $a_1,a_2,...,a_{i-1},u,1$.
+        Thus $B'(x)=1$ and so $x\in D'$ in this case.\\
+        Otherwise, $x\notin D$. Thus the path $a_1,...,a_n$ is
+        unchanged in $B'$ w.r. to $B$. Hence $B'(x)$ evaluates
+        on the exact same path - which we know ends with $1$.
+        Hence $B'(x)=1$ too, so $x\in D'$.\\
+        Meaning in all cases $x\in D'$.\\
+        So $D\subseteq D'$.
+    \item False. %$D'\subsetneq D$.\\
+        Counter example:\\
+        Consider kripke structure $(S=\{0,1\},R=\{(s,s)\mid s\in S\},L=\{(s,\emptyset)\mid s\in S\})$.
+        Consider $D=\{1\}$.\\
+        Let $B$ be the BDD representing $D$:\\
+        \begin{center}\begin{tikzpicture}[->,>=stealth',thick]
+        \node[c]{$a_0$}
+            child{ node[r] {0}}
+            child{ node[r] {1}}
+        ;\end{tikzpicture}\end{center}
+        Now consider $u$ as $a_0$. This would mean $B'$ is: aa asdas
+        \begin{center}\begin{tikzpicture}[->,>=stealth',thick]
+        \node[c]{$a_0$}
+            child{ node[r] {1}}
+        ;\end{tikzpicture}\end{center}
+        (Technically the $a_0$ would be reduced...).\\
+        So now $B'(0)=1$ also, hence $D'=\{0,1\}\not\subseteq D$.
+    \end{enumerate}
+
+\end{enumerate}
+
+% \begin{tikzpicture}[->,>=stealth',thick] 
+% \node[c] {a}
+% node[c] {c}
+%     child{ node[c] {d}
+%         child{ node[r] {0}}
+%         child{ node[r] {0}}
+%     }
+%     child{ node[c] {d}
+%         child{ node[r] {0}}
+%         child{ node[r] {1}}
+%     }
+% ;
+% \end{tikzpicture}
+
 \section{D\&D}
-\maketitle
 
 \end{document}
