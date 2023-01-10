@@ -5,3 +5,5 @@
 *.out
 *.dvi
 *.synctex.gz
+build/
+.vscode/
