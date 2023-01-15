@@ -49,7 +49,7 @@ int verify(int user_id, int password) {
 
 int main() {
 	//if (argc != 3) { printf("Usage: ./hack_me [username] [password]\n"); return 1; }
-	int username = 0;//atoi(argv[1]);
+	int username = 211515606;//atoi(argv[1]);
 	int password = nondet_int();//atoi(argv[2]);
 	__CPROVER_assume(password != 16);
 	int verification_answer = verify(username, password);

@@ -47,9 +47,9 @@ int verify(int user_id, int password) {
 	return ((l111l ilili illil) || (illil ilili (illll << l11l)))? l11l : ll11;
 }
 
-int main() {
+int main(int argc, char **argv) {
 	//if (argc != 3) { printf("Usage: ./hack_me [username] [password]\n"); return 1; }
-	int username = 0;//atoi(argv[1]);
+	int username = 0;
 	int password = nondet_int();//atoi(argv[2]);
 	int verification_answer = verify(username, password);
 	assert(!verification_answer);

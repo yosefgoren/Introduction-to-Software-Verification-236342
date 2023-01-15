@@ -7,6 +7,7 @@
 \usepackage{hyperref} 
 \usepackage[labelfont=bf]{caption}
 \usepackage{algpseudocode}
+\usepackage{verbatim}
 
 \newtheorem{theorem}{Theorem}
 \newtheorem{lemma}[theorem]{Lemma}
@@ -65,14 +66,166 @@
     level 3/.style={sibling distance=15mm},
     level 4/.style={sibling distance=7mm}
 }
-\author{Yosef, Andrew}
+\author{Yosef Goren, Andrew Elashkin}
 \title{Software Verification Homework 5}
 \maketitle
+\part{Dry}
+\section{}
+\subsection{}
+\[
+    R_{healthy}(u,v)=R(u,v)\wedge \neg R_{ill}(u,v)    
+\]
+This means a healthy transition is a transition
+and it is also not an ill transition.
+
+\subsection{}
+In this question we assume $n=2^N$ for some $N\in\mathbb{N}$.\\
+First we define a formula
+for checking if a path $v_1,...,v_k$
+respects $R_{ill}$:
+\[
+    HP(v_1,...,v_k)=\bigwedge_{i\in[k]}\bigwedge_{j\in[k]\setminus\{i\}}
+        \left((v_i=v_j\wedge v_{i+1}=v_{j+1})\rightarrow \neg R_{ill}(v_i,v_{i+1})\right)
+\]
+
+Now checking if a path $v_1,...,v_k$
+is a possible, respects $R_{ill}$
+and satisfies $Gp$:\\
+\[
+    F(v_1,...,v_k)
+    =I(v_0)\wedge HP(v_1,...,v_k)\wedge \bigwedge_{i\in[k]}p(v_i)
+\]
+
+Given this formula the algorithm is:
+\begin{algorithmic}
+    \For{$k\in[n+1]:$}
+        \State $\phi:=F(v_1,v_2,...,v_k)\wedge\left(\bigvee_{i\in[n-1]}\left(v_k=v_i\wedge\bigwedge_{j=i}^{k-1}R_{healthy}(v_j,v_{j+1})\right)\right)$
+        \If{$SAT(\phi)$}
+            \State \Return $true$
+        \EndIf
+    \EndFor
+    \State \Return $false$
+\end{algorithmic}
+If a path is possible, exists
+a subpath of it that is no longer than $n$
+vertecies - hence the algorithm will find
+said path.
+The condition appended to $F$ verifies 
+that a path is not only
+possible, repects $R_{ill}$ and satisfies $Gp$ -
+but it also ends with a loop of healthy transitions
+meaning it can be extended into an infinite
+path with the desired properties.
+
+\section{}
+The requirements from a path to satisfy these requirements are:
+\begin{enumerate}
+    \item The path starts at an initial state.
+    \item The transitions within the path are legal.
+    \item The path ends with a loop (thus can be extended to an infinite path with the same local properties).
+    \item For each vertex there is a son vertex that satisfies $p$.
+    \item For each vertex there is a son vertex that satisfies $q$.
+\end{enumerate}
+Denote the set of vertecies in the graph with $\{u_i\}_{i\in[n]}$.\\
+Now we provide a formula for each requirement:
+\begin{enumerate}
+    \item $I(v_0)$
+    \item $\bigwedge_{i\in[k-1]}R(v_i,v_{i+1})$
+    \item $\bigvee_{i\in[n-1]}v_k=v_i$
+    \item $\bigvee_{i\in[k-1]}(\bigvee_{j\in[n]}R(v_i,v_j)\wedge p(v_j))$
+    \item $\bigvee_{i\in[k-1]}(\bigvee_{j\in[n]}R(v_i,v_j)\wedge q(v_j))$
+\end{enumerate}
+
+So the formula for the path is:
+\[
+    F(v_1,...,v_k)=
+    I(v_0)
+    \wedge\left(\bigwedge_{i\in[k-1]}R(v_i,v_{i+1})\right)
+\]\[
+    \wedge\left(\bigvee_{i\in[n-1]}(v_k=v_i)\right)
+    \wedge\left(\bigvee_{i\in[k-1]}(\bigvee_{j\in[n]}R(v_i,v_j)\wedge p(v_j))\right)
+    \wedge\left(\bigvee_{i\in[k-1]}(\bigvee_{j\in[n]}R(v_i,v_j)\wedge q(v_j))\right)
+\]
+\newpage
+
+Now the algorithm is:
+\begin{algorithmic}
+    \For{$k\in[n+1]:$}
+        \State $\phi:=F(v_1,v_2,...,v_k)$
+        \If{$SAT(\phi)$}
+            \State \Return $true$
+        \EndIf
+    \EndFor
+    \State \Return $false$
+\end{algorithmic}
+
+\part{Wet}
+\setcounter{section}{0}
 \section{}
 The system is meant to verify a
 username and passowrd passed as command line arguments.
 The first parameter is a username
 and the second one is a password;
 both the username and password must be integers.
+
+\section{}
+The changes to the code have been:
+\begin{itemize}
+    \item Changed username to hardcoded ID.
+    \item Changed pasword to \texttt{nondet\_int()}.
+    \item Asserted that the verification failed (\texttt{assert(!verification\_success)}).
+\end{itemize}
+Also, when running the program we have passed \texttt{--trace}
+which requires it to provide us with a counterexample in the
+cases where the assertion fails.
+The assertion failing means that the verification succeded -
+hence a counterexample would include an assignment into
+the password variable which results with a successful verification
+meaning we have a correct password.
+
+\section{}
+To produce this password we have added an \texttt{assume(password != 16)} (which is what we got before 
+for the same username),
+which caused the program to produce an additional counterexample: 42.\\
+To prove that this works for all usernames,
+we have set:
+\begin{itemize}
+    \item \texttt{username=nondet\_int();}
+    \item \texttt{password = 42;}
+    \item \texttt{assert(verification\_success);},
+\end{itemize}
+So we are essentially asing cbmc to prove that for whatever username,
+with password 42 - verification is successful (and it did).
+
+\section{}
+\subsection{}
+The run finishes with \texttt{predictable.c}
+but goes into an infinite loop with \texttt{binsearch.c}.
+
+\subsection{}
+If we add \texttt{--unwind 1},
+the verification is successful for \texttt{binsearch.c}.
+\texttt{--undwind} sets a limit
+for how deep the verification should go into loops by
+converting any loops into a series of nested if statements.\\
+\texttt{--no-unwinding-assertions} means
+that if the depth threashold is passed - 
+it is not viewed as a failiure (as opposed to assuming the
+program should not iterate for more than the given number of times).\\
+The verification success means that no illegal memory accesses are possible within parts of the program that aren't deeper in a loop
+than 1 iteration. (and we know nothing about
+any part of the program that is deeper than one iteration into a loop).
+
+\subsection{}
+With \texttt{--unwind 2} the verification fails for \texttt{binsearch.c}.\\
+This means that the programm can access memory illegally.
+Upon further analysis, this is due to char overflow in the index variable
+which results in neagtive indexation to the array:
+\begin{verbatim}
+Violated property:
+    file binsearch.c line 12 function binsearch
+    array `a' lower bound in a[(signed long int)middle]
+    (signed long int)middle >= 0l
+\end{verbatim}
 
 \end{document}
