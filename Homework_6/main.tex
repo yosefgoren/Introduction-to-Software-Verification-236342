@@ -1,0 +1,168 @@
+\documentclass{article}
+% basics
+\usepackage{amsfonts}
+\usepackage{enumitem}
+\usepackage{float}
+\usepackage{graphicx}
+\usepackage{hyperref} 
+\usepackage[labelfont=bf]{caption}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}{Corollary}[theorem]
+
+% unique math expressions:  
+\usepackage{amsmath}
+\DeclareMathOperator*{\andloop}{\wedge}
+\DeclareMathOperator*{\pr}{Pr}
+\DeclareMathOperator*{\approach}{\longrightarrow}
+\DeclareMathOperator*{\eq}{=}
+
+% grey paper
+\usepackage{xcolor}
+% \pagecolor[rgb]{0.11,0.11,0.11}
+% \color{white}
+
+% embedded code sections
+\usepackage{listings}
+\definecolor{codegreen}{rgb}{0,0.6,0}
+\definecolor{codegray}{rgb}{0.5,0.5,0.5}
+\definecolor{codepurple}{rgb}{0.58,0,0.82}
+\lstdefinestyle{mystyle}{
+    commentstyle=\color{codegreen},
+    keywordstyle=\color{magenta},
+    numberstyle=\tiny\color{codegray},
+    stringstyle=\color{codepurple},
+    basicstyle=\ttfamily\footnotesize,
+    breakatwhitespace=false,         
+    breaklines=true,                 
+    captionpos=b,                    
+    keepspaces=true,                 
+    numbers=left,                    
+    numbersep=5pt,                  
+    showspaces=false,                
+    showstringspaces=false,
+    showtabs=false,                  
+    tabsize=2
+}
+
+\lstset{style=mystyle}
+
+\begin{document}
+\author{Yosef Goren, Andrew Elashkin}
+\title{Homework 6}
+\maketitle
+\section{}
+\begin{enumerate}[label=\alph*.]
+    \item True.
+    \begin{itemize}
+        \item Let $M_1=(S_1,I_1,R_1,L_1), H:=\{(s,s)\mid s\in S_1\}$.
+        \item $H$ is a simulation relation:\\
+        Let $(s,s')\in H$. by construction $s=s'$, thus they satisfy matching
+        atomic propositions. Furthermore - let $f$ be successor to $s$,
+        thus $f$ is also a successor to $s'$ and $(f,f)\in H$.\\
+        
+        \item Let $s\in I_1$, thus $(s,s)\in H$. So $R_1\preceq R_1$.
+    \end{itemize}
+    \item False.
+    \begin{itemize}
+        \item 
+        Assume $AP=\{F_1,F_2\}$ and 
+        take the structures:
+        \[
+            M:=(
+                S=\{i_1,f_1, i_2, f_2\},
+                I=\{i_1,i_2\},
+                R=\{(i_1,f_1),(i_2,f_2), (f_1,f_1), (f_2,f_2)\},
+                L=\{(i_j, \emptyset), (f_j,\{F_j\})\mid j\in\{1,2\}\}
+            )
+        \]
+        \[
+            M':=(
+                S'=\{i',f'\},
+                I'=\{i'\},
+                R'=\{(i',f'), (f',f')\},
+                L'=\{(i', \emptyset), (f', \{F_1\})\}
+            )
+        \]
+        \item Let $H:=\{(i',i_1), (f', f_1)\}$. $H$ is a simulation relation $H\subseteq S'\times S$:\\
+        Let $(a,b)\in H$. it is easy to see that the atomic
+        propositions match. Also, the only possible successor to $a$
+        is $f'$ (wether $a=i'$ or $a=f'$), and the only successor to $b$
+        is also $f_1$, so since $(f',f_1)\in H$ we have that $H$ is indeed a simutation relation.
+        \item Let $s\in I=\{i'\}$, meaning $s=i'$,
+        we have that $(i',i_1)\in H$ and $i_1\in I_1$, Hence $M'\preceq M$.
+        \item Assume towards contrediction that exists $H'$ - a simulation relation $\subseteq S\times S'$ 
+        and which gives $M\preceq M'$. Then either $\exists s':(s',i_2)\in H'$ or not.
+        \item If $\exists s':(s',i_2)\in H'$:\\
+        Consider $f_2$ - it cannot be that $(x,f_2)\in H'$ since no $x\in S'$
+        has the atomic proposition $F_2$ (which $f_2$ does). Hence $\forall y:(i_2,y)\notin H'$,
+        but this directly contredicts the definition of $M\preceq M'$.
+        \item So the assumption is false and $M\not\preceq M'$.
+        \item Hence the relation is not symmetric.
+    \end{itemize}
+    \item False.
+    \begin{itemize}
+        \item Consider:
+        \[
+            M:=(
+                S=\{i_1,i_2\},
+                I=\{i_1,i_2\},
+                R=\{(i_1,i_1), (i_2,i_2)\},
+                L=\{(x,\emptyset)\mid x\in S\}
+            )
+        \]
+        \[
+            M':=(
+                S'=\{i'\},
+                I'=\{i'\},
+                R'=\{(i',i')\},
+                L'=\{(x,\emptyset)\mid x\in S\}
+            )
+        \]
+        Let $H_e:=\{(i',i_1), (i',i_2)\}, H_c:=\{(i_1,i'), (i_2,i')\}$.
+        \item Clearly $M\neq M'$.
+        \item $H_e$ is a simulation relation:\\
+        The atomic propositions always match since they are always $\emptyset$.\\
+        Let $(i',b)\in H_e$. In any case the only successor to $b$ is $b$,
+        and since $i'$ is also a successor to itself, we have that for any successor to $b$,
+        there is a matching successor to $i'$ (itself) s.t. $(i',b)\in H_e$.\\
+        \item $M'\preceq M$:\\
+        We have a simulation relation $H_e$,
+        and for all initial states $i'\in I'$, we have that $(i',i_2)\in H_e$.
+        \item $H_c$ is a simulation relation:\\
+        Atomic propositions like before.
+        Let $(a,i')\in H_c$. $a$ is a successor to itself,
+        and $i'$ is the only successor to itself and $(a,i')\in H_c$.
+        \item $M\preceq M'$:\\
+        We have a simulation relation and for each initial state $a\in I$,
+        we have $(a,i')\in H_c$.
+        \item We have seen $M\preceq M'\wedge M'\preceq M\wedge M\neq M'$.
+    \end{itemize}
+    \item True.
+    \begin{itemize}
+        \item 
+        Let:
+        $$
+            M_1=(S_1,I_1,R_1,L_1),
+            M_2=(S_2,I_2,R_2,L_2),
+            M_3=(S_3,I_3,R_3,L_3)
+        $$
+        And assume $M_1\preceq M_2\wedge M_2\preceq M_3$ denote the simulating
+        relations as $H_{1,2}, H_{2,3}$ repsectively.
+        \item Let $H_{1,3}:=\{(a,c)\mid \exists b: (a,b)\in H_{1,2}\wedge (b,c)\in H_{2,3}\}$.
+        \item $H_{1,3}$ is a simulation relation:\\
+        Let $(a,c)\in H_{1,3}$. The atomic propositions match by: $AP(a)=AP(b)=AP(c)$.\\
+        Let $a'$ be a successor to $a$, then $\exists b'$ a successor of $b$ s.t. $(a',b')\in H_{1,2}$,
+        thus $\exists c'$ a successor of $c$ s.t. $(b',c')\in H_{2,3}$, and by definition: $(a',c')\in H_{1,3}$.
+        To sum up the last conclusion: if $a'$ is a successor of $a$, then exists some $c'$ a successor of $c$ s.t. $(a',c')\in H_{1,3}$.\\
+        So we have that $H_{1,3}$ is a simulation relation.
+        \item Let $i_1\in I_1$, thus $\exists i_2\in I_2$ s.t. $(i_1,i_2)\in H_{1,2}$.
+        Also $i_2\in I_2\Rightarrow \exists i_3\in I_3$ s.t. $(i_2,i_3)\in H_{2,3}$.
+        So by definition of $H_{1,3}$ we have that $(i_1,i_3)\in H_{1,3}$, and $i_3\in I_3$.\\
+        Thus $M_1\preceq M_3$.
+
+    \end{itemize}
+\end{enumerate}
+
+\end{document}
