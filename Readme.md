@@ -1,14 +1,22 @@
-This project uses LaTeX.
-The recommended environment includes using Visual Studio Code with git from a linux environment.
+# Introduction to Software Verification - 236342
 
-To set it up on a linux environment with vscode installed:
-1. $ sudo apt install texlive-full
-(run the above on bash. This might take a while)
-2. go to Extensions tab in vscode (Ctrl+Shift+X) and search for 'LaTeX Workshop' and install.
-3. Reload vscode window.
+This repository contains homework assignments and their solutions for the course "Introduction to Software Verification" (236342) that was given in Winter 2022 semester at the Technion Institute of Technology.
 
-How to use this environment:
-1. The 'main' latex files (which include the rest) are called 'main.tex'.
-2. The latex files will be compiled automatically when saving them, also you can run 'latex main.tex' to compile.
-3. You can view the output .pdf file in vscode once you have 'LaTeX Workshop'.
-4. It is recommended to split the vscode editor, where one side contains the '.tex' source and the other shows the output. To open split #2 (with default keybinds) press 'Ctrl+2'. Pressing 'Ctrl+1' and 'Ctrl+2' can also be used to quickly jump focus between splits.
+## Structure
+
+The repository is organized into separate folders for each homework assignment. Each folder contains:
+
+- A LaTeX file (`main.tex`) with the theoretical part of the assignment.
+- Python and/or C files with the practical coding tasks.
+
+## Setup
+
+To work with the LaTeX files, it is recommended to use Visual Studio Code with the LaTeX Workshop extension. You will also need to have a TeX distribution installed (e.g., TeX Live on Linux).
+
+## Assignments
+
+Each assignment folder contains specific tasks related to software verification. The tasks involve both theoretical work (proving correctness, etc.) and practical coding tasks (implementing algorithms, etc.).
+
+## Usage
+
+To view the assignments, navigate to the respective assignment folder and open the `main.tex` file. To run the code, navigate to the respective assignment folder and run the Python or C files.
